@@ -74,10 +74,12 @@ public class FreightAircraft extends Aircraft {
     @Override
     public int getLoadingTime() {
 
+        int freightCapacity = this.characteristics.freightCapacity;
+        int loadPercentage = this.tasks.getCurrentTask().getLoadPercent();
+
         //Weight of freight to be loaded in kg.
         int freightLoaded =
-                Math.round(this.characteristics.freightCapacity
-                        * this.tasks.getCurrentTask().getLoadPercent());
+                (int) Math.round((double) freightCapacity * (loadPercentage / 100));
         if (freightLoaded < 1000) {
             return 1;
         } else if (freightLoaded > 50000) {
@@ -95,8 +97,9 @@ public class FreightAircraft extends Aircraft {
      */
     @Override
     public int calculateOccupancyLevel() {
-        return Math.round((this.freightAmount
-                / this.maxFreight) * 100);
+        int freight = this.freightAmount;
+        int maxFreight = this.maxFreight;
+        return (int) Math.round( (double) (freight / maxFreight) * 100);
     }
 
     /**
@@ -131,18 +134,25 @@ public class FreightAircraft extends Aircraft {
     public void tick() {
         super.tick();
 
-        //Aircraft's current LOAD task
+        //Aircraft's current task
         Task currentTask = this.getTaskList().getCurrentTask();
 
-        // Amount of weight to be loaded to aircraft
+        //Variables for weight calculation
+        int loadPercentage =
+                (int) Math.round((double) currentTask.getLoadPercent() * this.maxFreight);
+        int loadingTime = this.getLoadingTime();
+
+
+        //Weight of cargo to be loaded to aircraft
         int loadFreight =
-                (currentTask.getLoadPercent() / 100) * this.maxFreight;
+                (int) Math.round((double) loadPercentage / loadingTime);
+
         if (currentTask.equals(TaskType.LOAD)) {
-            this.freightAmount += Math.round(loadFreight / this.getLoadingTime());
+            this.freightAmount += loadFreight;
+            //Maximum capacity reached
             if (this.freightAmount > this.maxFreight) {
                 this.freightAmount = this.maxFreight;
             }
         }
     }
-
 }

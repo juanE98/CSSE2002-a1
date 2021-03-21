@@ -53,7 +53,7 @@ public class TaskList {
     public Task getNextTask() {
         int currentTaskIndex = tasksAvailable.indexOf(this.getCurrentTask());
         currentTaskIndex += 1;
-        if (currentTaskIndex > totalTasks) {
+        if (currentTaskIndex >= totalTasks) {
             currentTaskIndex = 0;
         }
         return this.tasksAvailable.get(currentTaskIndex);
@@ -93,7 +93,8 @@ public class TaskList {
     @Override
     public String toString() {
         String str = String.format("TaskList currently on %s [%d/%d]",
-                this.getCurrentTask(),tasksAvailable.indexOf(currentTask),
+                this.getCurrentTask(),
+                tasksAvailable.indexOf(this.getCurrentTask()) + 1,
                 this.totalTasks);
         return str;
     }

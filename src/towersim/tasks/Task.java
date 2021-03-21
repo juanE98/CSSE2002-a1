@@ -73,7 +73,7 @@ public class Task {
     @Override
     public String toString() {
         if (this.taskType == TaskType.LOAD) {
-            return String.format("LOAD at percent %d ", this.getLoadPercent());
+            return String.format("LOAD at percent%d", this.getLoadPercent());
         }
         return this.taskType.toString();
     }

@@ -1,29 +1,33 @@
 package towersim.aircraft;
 
 import towersim.tasks.TaskList;
+import towersim.tasks.TaskType;
 import towersim.util.EmergencyState;
 import towersim.util.OccupancyLevel;
 import towersim.util.Tickable;
 
+/**
+ * Represents an aircraft whose movement is managed by the system.
+ */
 public abstract class Aircraft implements OccupancyLevel, Tickable, EmergencyState {
 
     /** Weight of a litre of aviation fuel, in kilograms. */
-    public static final double LITRE_OF_FUEL_WEIGHT = 0;
+    public static final double LITRE_OF_FUEL_WEIGHT = 0.8;
 
     /** characteristics that describe this aircraft */
-    private final AircraftCharacteristics characteristics;
+    protected AircraftCharacteristics characteristics;
 
     /** task list to be used by aircraft */
-    private final TaskList tasks;
+    protected TaskList tasks;
 
     /** current amount of fuel onboard, in litres */
-    private final double fuelAmount;
+    protected double fuelAmount;
 
     /** unique callsign */
-    private String callsign;
+    protected String callsign;
 
     /** Emergency status of aircraft */
-    private boolean emergencyStatus;
+    protected boolean emergencyStatus;
 
     /**
      * Creates a new aircraft with the given callsign, task list, fuel
@@ -90,7 +94,8 @@ public abstract class Aircraft implements OccupancyLevel, Tickable, EmergencySta
      * @return percentage of fuel remaining
      */
     public int getFuelPercentRemaining() {
-        return (int) (100 * this.getFuelAmount() / this.getCharacteristics().fuelCapacity);
+        return (int) Math.round((100 * (this.getFuelAmount()
+                / this.getCharacteristics().fuelCapacity)));
     }
 
     /**
@@ -109,7 +114,8 @@ public abstract class Aircraft implements OccupancyLevel, Tickable, EmergencySta
     public double getTotalWeight() {
         int emptyWeight = this.characteristics.emptyWeight;
         double fuelOnboard =
-                this.getCharacteristics().fuelCapacity * this.getFuelPercentRemaining();
+                (this.getCharacteristics().fuelCapacity
+                        * this.getFuelPercentRemaining()) * LITRE_OF_FUEL_WEIGHT;
 
         return (emptyWeight + fuelOnboard);
     }
@@ -149,7 +155,22 @@ public abstract class Aircraft implements OccupancyLevel, Tickable, EmergencySta
      * its maximum fuel capacity.
      */
     public void tick() {
+        //Burn Fuel
+        if (this.tasks.getCurrentTask().equals(TaskType.AWAY)) {
+            this.fuelAmount -= (0.1 * this.characteristics.fuelCapacity);
+            if (this.fuelAmount < 0) {
+                this.fuelAmount = 0;
+            }
+        }
 
+        //Refuel
+        if (this.tasks.getCurrentTask().equals(TaskType.LOAD)) {
+            this.fuelAmount += (this.getCharacteristics().fuelCapacity
+                    / this.getLoadingTime());
+            if (this.fuelAmount > this.getCharacteristics().fuelCapacity) {
+                this.fuelAmount = this.getCharacteristics().fuelCapacity;
+            }
+        }
     }
 
     /**
@@ -175,8 +196,18 @@ public abstract class Aircraft implements OccupancyLevel, Tickable, EmergencySta
      */
     @Override
     public String toString() {
-        String str = "";
-
+        String str;
+        if (!hasEmergency()) {
+            str = String.format("%s %s %s %s", this.characteristics.type,
+                    this.callsign, this.getCharacteristics().toString(),
+                    this.tasks.getCurrentTask());
+        }
+        else {
+            str = String.format("%s %s %s %s (EMERGENCY)",
+                    this.characteristics.type,
+                    this.callsign, this.getCharacteristics().toString(),
+                    this.tasks.getCurrentTask());
+        }
         return str;
     }
 
