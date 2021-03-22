@@ -63,6 +63,9 @@ public abstract class Terminal implements EmergencyState, OccupancyLevel {
      * new gate
      */
     public void addGate(Gate gate) throws NoSpaceException {
+        if (this.gates.size() + 1 > MAX_NUM_GATES) {
+            throw new NoSpaceException();
+        }
         this.gates.add(gate);
     }
 
