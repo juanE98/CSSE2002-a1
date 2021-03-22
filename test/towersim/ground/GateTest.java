@@ -60,7 +60,7 @@ public class GateTest {
         tasks2.add(takeoff);
         tasks2.add(away);
         TaskList taskList2 = new TaskList(tasks2);
-        
+
         //Instantiate plane object
         plane1 = new PassengerAircraft("Passenger123",
                 AircraftCharacteristics.AIRBUS_A320,taskList1,27000,50);
@@ -109,7 +109,15 @@ public class GateTest {
     }
 
     @Test
-    public void isOccupied() {
+    public void isOccupiedTest() throws NoSpaceException {
+        gate1.parkAircraft(plane1);
+        assertTrue(gate1.isOccupied());
+    }
+
+    @Test
+    public void isNotOccupiedTest() throws NoSpaceException {
+        gate1.aircraftLeaves();
+        assertFalse(gate1.isOccupied());
     }
 
     @Test

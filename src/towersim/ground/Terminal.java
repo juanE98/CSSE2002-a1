@@ -5,6 +5,7 @@ import towersim.util.NoSpaceException;
 import towersim.util.NoSuitableGateException;
 import towersim.util.OccupancyLevel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,16 +15,16 @@ public abstract class Terminal implements EmergencyState, OccupancyLevel {
 
     //Field Variables
 
-    /**Maximum possible number of gates allowed at a single terminal. */
+    /** Maximum possible number of gates allowed at a single terminal. */
     public static final int MAX_NUM_GATES = 6;
 
     /** id number for this terminal */
     private final int terminalNumber;
 
     /** Emergency state of this terminal */
-    protected boolean emergencyStatus;
+    private boolean emergencyStatus;
 
-    /** All gates in this terminal */
+    /** List of all gates in this terminal */
     private List<Gate> gates;
 
 
@@ -41,6 +42,7 @@ public abstract class Terminal implements EmergencyState, OccupancyLevel {
     protected Terminal(int terminalNumber) {
         this.terminalNumber = terminalNumber;
         this.emergencyStatus = false;
+        this.gates = new ArrayList<>();
     }
 
     /**
@@ -61,7 +63,7 @@ public abstract class Terminal implements EmergencyState, OccupancyLevel {
      * new gate
      */
     public void addGate(Gate gate) throws NoSpaceException {
-
+        this.gates.add(gate);
     }
 
     /**
@@ -133,7 +135,15 @@ public abstract class Terminal implements EmergencyState, OccupancyLevel {
      * @return percentage of occupied gates in this terminal, 0 to 100
      */
     public int calculateOccupancyLevel() {
-        return 0;
+        int totalGates = this.gates.size();
+        int occupiedGate = 0;
+
+        for (Gate gate : this.gates) {
+            if (gate.isOccupied()) {
+                occupiedGate++;
+            }
+        }
+        return ((int) Math.round((double) occupiedGate / totalGates)) * 100;
     }
 
     /**
@@ -152,9 +162,14 @@ public abstract class Terminal implements EmergencyState, OccupancyLevel {
      */
     @Override
     public String toString() {
-        return null;
+        String str;
+        if (this.hasEmergency()) {
+            str = String.format("Terminal %d, %d gates (EMERGENCY)",
+                    this.getTerminalNumber(), this.gates.size());
+        } else {
+            str = String.format("Terminal %d, %d gates",
+                    this.getTerminalNumber(), this.gates.size());
+        }
+        return str;
     }
-
-
-
 }
