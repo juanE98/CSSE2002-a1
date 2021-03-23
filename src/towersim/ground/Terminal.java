@@ -139,7 +139,9 @@ public abstract class Terminal implements EmergencyState, OccupancyLevel {
      * @return percentage of occupied gates in this terminal, 0 to 100
      */
     public int calculateOccupancyLevel() {
+        //total number of gates in this terminal
         int totalGates = this.gates.size();
+        //total number of gates that have aircraft parked inside
         int occupiedGate = 0;
 
         for (Gate gate : this.gates) {
@@ -147,7 +149,7 @@ public abstract class Terminal implements EmergencyState, OccupancyLevel {
                 occupiedGate++;
             }
         }
-        return ((int) Math.round((double) occupiedGate / totalGates)) * 100;
+        return (int) Math.round((double) occupiedGate / totalGates * 100);
     }
 
     /**
@@ -168,10 +170,12 @@ public abstract class Terminal implements EmergencyState, OccupancyLevel {
     public String toString() {
         String str;
         if (this.hasEmergency()) {
-            str = String.format("Terminal %d, %d gates (EMERGENCY)",
+            str = String.format("%s %d, %d gates (EMERGENCY)",
+                    this.getClass().getSimpleName(),
                     this.getTerminalNumber(), this.gates.size());
         } else {
-            str = String.format("Terminal %d, %d gates",
+            str = String.format("%s %d, %d gates",
+                    this.getClass().getSimpleName(),
                     this.getTerminalNumber(), this.gates.size());
         }
         return str;

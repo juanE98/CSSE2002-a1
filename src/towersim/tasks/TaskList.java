@@ -26,7 +26,7 @@ public class TaskList {
      * @param tasks list of tasks
      */
     public TaskList(List<Task> tasks) {
-        this.tasksAvailable = new LinkedList<Task>(tasks);
+        this.tasksAvailable = new LinkedList<>(tasks);
         this.currentTask = this.tasksAvailable.get(0);
         this.totalTasks = tasksAvailable.size();
     }

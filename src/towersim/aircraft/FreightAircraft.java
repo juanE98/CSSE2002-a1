@@ -79,7 +79,7 @@ public class FreightAircraft extends Aircraft {
 
         //Weight of freight to be loaded in kg.
         int freightLoaded =
-                (int) Math.round((double) freightCapacity * (loadPercentage / 100));
+                (int) Math.round((double) freightCapacity * ((double) loadPercentage / 100));
         if (freightLoaded < 1000) {
             return 1;
         } else if (freightLoaded > 50000) {

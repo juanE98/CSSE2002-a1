@@ -55,12 +55,12 @@ public class TaskListTest {
     @Test
     public void getcurrentTaskTest() {
         Task current1 = task1.getCurrentTask();
-        assertEquals("current task did not match", current1, wait );
+        assertEquals("current task did not match", wait, current1);
 
         task2.moveToNextTask();
         task2.moveToNextTask();
         Task current2 = task2.getCurrentTask();
-        assertEquals("current task did not match", current2, takeoff);
+        assertEquals("current task did not match", takeoff, current2);
     }
 
     @Test

@@ -94,8 +94,12 @@ public abstract class Aircraft implements OccupancyLevel, Tickable, EmergencySta
      * @return percentage of fuel remaining
      */
     public int getFuelPercentRemaining() {
-        return (int) Math.round((100 * (this.getFuelAmount()
-                / this.getCharacteristics().fuelCapacity)));
+        //Fuel capacity
+        double fuelCapacity = this.getCharacteristics().fuelCapacity;
+        //Fuel remaining currently
+        double fuelAmount = this.getFuelAmount();
+        return (int) Math.round((fuelAmount
+                / fuelCapacity) * 100);
     }
 
     /**
@@ -156,15 +160,15 @@ public abstract class Aircraft implements OccupancyLevel, Tickable, EmergencySta
      */
     public void tick() {
         //Burn Fuel
-        if (this.tasks.getCurrentTask().equals(TaskType.AWAY)) {
-            this.fuelAmount -= (0.1 * this.characteristics.fuelCapacity);
+        if (this.tasks.getCurrentTask().getType().equals(TaskType.AWAY)) {
+            this.fuelAmount -= (0.1 * this.getCharacteristics().fuelCapacity);
             if (this.fuelAmount < 0) {
                 this.fuelAmount = 0;
             }
         }
 
         //Refuel
-        if (this.tasks.getCurrentTask().equals(TaskType.LOAD)) {
+        if (this.tasks.getCurrentTask().getType().equals(TaskType.LOAD)) {
             this.fuelAmount += (this.getCharacteristics().fuelCapacity
                     / this.getLoadingTime());
             if (this.fuelAmount > this.getCharacteristics().fuelCapacity) {

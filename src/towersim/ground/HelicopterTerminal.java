@@ -8,6 +8,7 @@ public class HelicopterTerminal extends Terminal {
      * Creates a new HelicopterTerminal with the given unique terminal number.
      * @param terminalNumber identifying number of this helicopter terminal
      */
+
     public HelicopterTerminal(int terminalNumber) {
         super(terminalNumber);
     }

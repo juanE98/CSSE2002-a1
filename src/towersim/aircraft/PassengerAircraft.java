@@ -99,7 +99,7 @@ public class PassengerAircraft extends Aircraft {
         //Weight of passengers to be loaded
         int passengersLoaded =
                 (int) Math.round(Math.log10((double) passengerCapacity
-                        * (loadPercentage / 100)));
+                        * ((double) loadPercentage / 100)));
 
         if (passengersLoaded < 1) {
             passengersLoaded = 1;
