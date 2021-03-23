@@ -22,7 +22,7 @@ public class Gate {
      * Initially, there should be no aircraft occupying the gate.
      * @param gateNumber identifying number of this gate
      */
-    public Gate (int gateNumber) {
+    public Gate(int gateNumber) {
         this.gateNumber = gateNumber;
         this.aircraftPark = null;
     }

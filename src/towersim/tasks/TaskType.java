@@ -36,6 +36,7 @@ public enum TaskType {
 
     /**
      * Returns the written description of this task type.
+     * @return written description
      */
     public String getDescription() {
         return description;

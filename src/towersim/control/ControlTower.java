@@ -1,11 +1,18 @@
 package towersim.control;
 
 import towersim.aircraft.Aircraft;
+import towersim.aircraft.AircraftType;
+import towersim.ground.AirplaneTerminal;
 import towersim.ground.Gate;
+import towersim.ground.HelicopterTerminal;
 import towersim.ground.Terminal;
+import towersim.tasks.Task;
+import towersim.tasks.TaskType;
+import towersim.util.NoSpaceException;
 import towersim.util.NoSuitableGateException;
 import towersim.util.Tickable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,19 +22,27 @@ import java.util.List;
  * loaded with cargo at gates in terminals.
  */
 public class ControlTower implements Tickable {
+
+    /** List of all terminals managed by control tower */
+    private List<Terminal> terminals;
+
+    /** List of all aircrafts managed by control tower */
+    private List<Aircraft> aircrafts;
+
     /**
      * Creates a new ControlTower.
      */
     public ControlTower() {
-
+        this.terminals = new ArrayList<Terminal>();
+        this.aircrafts = new ArrayList<Aircraft>();
     }
 
     /**
      * Adds the given terminal to the jurisdiction of this control tower.
      * @param terminal terminal to add
      */
-    public void addTerminal​(Terminal terminal) {
-
+    public void addTerminal(Terminal terminal) {
+        this.terminals.add(terminal);
     }
 
     /**
@@ -40,7 +55,9 @@ public class ControlTower implements Tickable {
      * @return all terminals
      */
     public List<Terminal> getTerminals() {
-
+        List<Terminal> terminalsList =
+                new ArrayList<Terminal>(this.terminals);
+        return terminalsList;
     }
 
     /**
@@ -54,9 +71,23 @@ public class ControlTower implements Tickable {
      * @throws NoSuitableGateException if there is no suitable gate for an
      * aircraft with a current task type of WAIT or LOAD
      */
-    public void addAircraft​(Aircraft aircraft)
+    public void addAircraft(Aircraft aircraft)
             throws NoSuitableGateException {
+        //Current Task of aircraft.
+        Task currentTask =
+                aircraft.getTaskList().getCurrentTask();
 
+        //add given aircraft to control tower jurisdiction.
+        this.aircrafts.add(aircraft);
+
+        //park aircraft at a suitable gate
+        if (currentTask.equals(TaskType.WAIT) || currentTask.equals(TaskType.LOAD)) {
+            try {
+                this.findUnoccupiedGate(aircraft).parkAircraft(aircraft);
+            } catch (NoSpaceException e) {
+                //Unoccupied gate contains aircraft ??
+            }
+        }
     }
 
     /**
@@ -69,6 +100,9 @@ public class ControlTower implements Tickable {
      * @return all aircraft
      */
     public List<Aircraft> getAircraft() {
+        List<Aircraft> aircraftList =
+                new ArrayList<Aircraft>(this.aircrafts);
+        return aircraftList;
 
     }
 
@@ -92,9 +126,24 @@ public class ControlTower implements Tickable {
      * @return gate for given aircraft if one exists
      * @throws NoSuitableGateException if no suitable gate could be found
      */
-    public Gate findUnoccupiedGate​(Aircraft aircraft)
+    public Gate findUnoccupiedGate(Aircraft aircraft)
             throws NoSuitableGateException {
-
+        //Check Airplane Terminals
+        if (aircraft.getCharacteristics().type.equals(AircraftType.AIRPLANE)) {
+            for (Terminal terminal : this.getTerminals()) {
+                if (terminal instanceof AirplaneTerminal) {
+                    return terminal.findUnoccupiedGate();
+                }
+            }
+            //Check Helicopter terminals
+        } else if (aircraft.getCharacteristics().type.equals(AircraftType.HELICOPTER)) {
+            for (Terminal terminal : this.getTerminals()) {
+                if (terminal instanceof HelicopterTerminal) {
+                    return terminal.findUnoccupiedGate();
+                }
+            }
+        }
+        throw new NoSuitableGateException();
     }
 
     /**
@@ -103,8 +152,16 @@ public class ControlTower implements Tickable {
      * @param aircraft aircraft whose gate to find
      * @return gate occupied by the given aircraft; or null if none exists
      */
-    public Gate findGateOfAircraft​(Aircraft aircraft) {
-
+    public Gate findGateOfAircraft(Aircraft aircraft) {
+        for (Terminal terminal : this.getTerminals()) {
+            for (Gate gate : terminal.getGates()) {
+                Aircraft aircraftMatch = gate.getAircraftAtGate();
+                if (aircraftMatch.equals(aircraft)) {
+                    return gate;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -117,6 +174,8 @@ public class ControlTower implements Tickable {
      */
     @Override
     public void tick() {
-
+        for (Aircraft aircraft : this.getAircraft()) {
+            aircraft.tick();
+        }
     }
 }

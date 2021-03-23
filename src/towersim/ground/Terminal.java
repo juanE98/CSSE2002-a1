@@ -42,7 +42,7 @@ public abstract class Terminal implements EmergencyState, OccupancyLevel {
     protected Terminal(int terminalNumber) {
         this.terminalNumber = terminalNumber;
         this.emergencyStatus = false;
-        this.gates = new ArrayList<>();
+        this.gates = new ArrayList<Gate>();
     }
 
     /**
@@ -79,7 +79,8 @@ public abstract class Terminal implements EmergencyState, OccupancyLevel {
      * @return list of terminal's gates
      */
     public List<Gate> getGates() {
-        return this.gates;
+        List<Gate> gatesList = new ArrayList<>(this.gates);
+        return gatesList;
     }
 
     /**

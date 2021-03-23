@@ -13,7 +13,7 @@ public class PassengerAircraft extends Aircraft {
      * kilograms. */
     public static final double AVG_PASSENGER_WEIGHT = 90.0;
 
-     /** Current number of passengers onboard */
+    /** Current number of passengers onboard */
     private int numPassengers;
 
     /** Maximum passenger capacity of aircraft */

@@ -201,8 +201,7 @@ public abstract class Aircraft implements OccupancyLevel, Tickable, EmergencySta
             str = String.format("%s %s %s %s", this.characteristics.type,
                     this.callsign, this.getCharacteristics().toString(),
                     this.tasks.getCurrentTask());
-        }
-        else {
+        } else {
             str = String.format("%s %s %s %s (EMERGENCY)",
                     this.characteristics.type,
                     this.callsign, this.getCharacteristics().toString(),
