@@ -99,7 +99,7 @@ public class FreightAircraft extends Aircraft {
     public int calculateOccupancyLevel() {
         int freight = this.freightAmount;
         int maxFreight = this.maxFreight;
-        return (int) Math.round((double) (freight / maxFreight) * 100);
+        return (int) Math.round((double) freight / maxFreight * 100);
     }
 
     /**

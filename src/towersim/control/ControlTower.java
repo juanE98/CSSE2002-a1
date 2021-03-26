@@ -84,8 +84,8 @@ public class ControlTower implements Tickable {
         if (currentTask.equals(TaskType.WAIT) || currentTask.equals(TaskType.LOAD)) {
             try {
                 this.findUnoccupiedGate(aircraft).parkAircraft(aircraft);
-            } catch (NoSpaceException e) {
-                //Unoccupied gate contains aircraft ??
+            } catch (NoSpaceException | NoSuitableGateException e) {
+                throw new NoSuitableGateException();
             }
         }
     }

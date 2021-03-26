@@ -117,11 +117,8 @@ public abstract class Aircraft implements OccupancyLevel, Tickable, EmergencySta
      */
     public double getTotalWeight() {
         int emptyWeight = this.characteristics.emptyWeight;
-        double fuelOnboard =
-                (this.getCharacteristics().fuelCapacity
-                        * this.getFuelPercentRemaining()) * LITRE_OF_FUEL_WEIGHT;
-
-        return (emptyWeight + fuelOnboard);
+        double fuelOnBoard = this.getFuelAmount() * LITRE_OF_FUEL_WEIGHT;
+        return emptyWeight + fuelOnBoard;
     }
 
     /**

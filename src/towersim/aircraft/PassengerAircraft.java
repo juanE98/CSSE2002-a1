@@ -65,8 +65,6 @@ public class PassengerAircraft extends Aircraft {
         return (this.numPassengers * AVG_PASSENGER_WEIGHT) + super.getTotalWeight();
     }
 
-
-
     /**
      * Returns the number of ticks required to load the aircraft at the gate.
      *
@@ -93,13 +91,13 @@ public class PassengerAircraft extends Aircraft {
     @Override
     public int getLoadingTime() {
 
-        int passengerCapacity = this.characteristics.passengerCapacity;
+        int passengerCapacity = this.getCharacteristics().passengerCapacity;
         int loadPercentage = this.tasks.getCurrentTask().getLoadPercent();
 
         //Weight of passengers to be loaded
         int passengersLoaded =
-                (int) Math.round(Math.log10((double) passengerCapacity
-                        * ((double) loadPercentage / 100)));
+                (int) (Math.log10(Math.round((double) passengerCapacity
+                        * ((double) loadPercentage / 100))));
 
         if (passengersLoaded < 1) {
             passengersLoaded = 1;
@@ -120,7 +118,7 @@ public class PassengerAircraft extends Aircraft {
     public int calculateOccupancyLevel() {
         int passengers = this.numPassengers;
         int maxPassengers = this.maxPassengers;
-        return (int) Math.round((double) (passengers / maxPassengers) * 100);
+        return (int) Math.round((double) passengers / maxPassengers * 100);
     }
 
     /**
