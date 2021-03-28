@@ -83,6 +83,7 @@ public class GateTest {
     @Test
     public void parkAircraftTest() throws NoSpaceException {
         try {
+            //Plane 1 should park successfully
             gate1.parkAircraft(plane1);
             try {
                 gate1.parkAircraft(plane2);
@@ -91,7 +92,7 @@ public class GateTest {
                 //Plane 2 shouldnt be able to park
             }
         } catch (NoSpaceException e) {
-            //Aircraft parked at empty gate
+            fail();
         }
     }
 
@@ -121,7 +122,7 @@ public class GateTest {
     }
 
     @Test
-    public void getAircraftAtGate() throws NoSpaceException {
+    public void getAircraftAtGateTest() throws NoSpaceException {
         gate1.parkAircraft(plane2);
         assertTrue(gate1.getAircraftAtGate() == plane2);
 
@@ -131,13 +132,22 @@ public class GateTest {
     }
 
     @Test
+    public void getNullAircraftAtGateTest() {
+        assertTrue(gate1.getAircraftAtGate() == null);
+    }
+
+    @Test
     public void testToStringAircraft() throws NoSpaceException {
         String gate1String = "Gate 1 [Passenger123]";
         gate1.parkAircraft(plane1);
         assertEquals("String did not match", gate1String, gate1.toString());
 
         String gate1StringWrong = "Gate  1 [ Passenger123 ]";
-        assertNotEquals("String did not match", gate1StringWrong,
+        assertNotEquals("String not expected to match", gate1StringWrong,
+                gate1.toString());
+
+        String gate1StringWrong2 = " Gate 1 Passenger123 ";
+        assertNotEquals("String not expected to match", gate1StringWrong2,
                 gate1.toString());
     }
 
