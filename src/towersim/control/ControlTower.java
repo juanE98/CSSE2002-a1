@@ -33,8 +33,8 @@ public class ControlTower implements Tickable {
      * Creates a new ControlTower.
      */
     public ControlTower() {
-        this.terminals = new ArrayList<Terminal>();
-        this.aircrafts = new ArrayList<Aircraft>();
+        terminals = new ArrayList<>();
+        aircrafts = new ArrayList<>();
     }
 
     /**
@@ -42,7 +42,7 @@ public class ControlTower implements Tickable {
      * @param terminal terminal to add
      */
     public void addTerminal(Terminal terminal) {
-        this.terminals.add(terminal);
+        terminals.add(terminal);
     }
 
     /**
@@ -55,9 +55,7 @@ public class ControlTower implements Tickable {
      * @return all terminals
      */
     public List<Terminal> getTerminals() {
-        List<Terminal> terminalsList =
-                new ArrayList<Terminal>(this.terminals);
-        return terminalsList;
+        return new ArrayList<>(this.terminals);
     }
 
     /**
@@ -100,10 +98,7 @@ public class ControlTower implements Tickable {
      * @return all aircraft
      */
     public List<Aircraft> getAircraft() {
-        List<Aircraft> aircraftList =
-                new ArrayList<Aircraft>(this.aircrafts);
-        return aircraftList;
-
+        return new ArrayList<Aircraft>(this.aircrafts);
     }
 
     /**

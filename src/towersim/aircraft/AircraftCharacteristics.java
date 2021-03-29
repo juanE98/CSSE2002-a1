@@ -24,7 +24,6 @@ public enum AircraftCharacteristics {
     /** Twin-engine heavy-lift helicopter. */
     SIKORSKY_SKYCRANE(AircraftType.HELICOPTER, 8724, 3328, 0, 9100);
 
-
     /** Type of aircraft.*/
     public final AircraftType type;
 
