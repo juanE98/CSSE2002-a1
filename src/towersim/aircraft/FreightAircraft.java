@@ -147,7 +147,7 @@ public class FreightAircraft extends Aircraft {
         int loadFreight =
                 (int) Math.round((double) loadPercentage / loadingTime);
 
-        if (currentTask.equals(TaskType.LOAD)) {
+        if (currentTask.getType().equals(TaskType.LOAD)) {
             this.freightAmount += loadFreight;
             //Maximum capacity reached
             if (this.freightAmount > this.maxFreight) {

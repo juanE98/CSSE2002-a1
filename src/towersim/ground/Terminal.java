@@ -13,8 +13,6 @@ import java.util.List;
  */
 public abstract class Terminal implements EmergencyState, OccupancyLevel {
 
-    //Field Variables
-
     /** Maximum possible number of gates allowed at a single terminal. */
     public static final int MAX_NUM_GATES = 6;
 
@@ -26,7 +24,6 @@ public abstract class Terminal implements EmergencyState, OccupancyLevel {
 
     /** List of all gates in this terminal */
     private List<Gate> gates;
-
 
     /**
      * Creates a new Terminal with the given unique terminal number.
@@ -79,8 +76,7 @@ public abstract class Terminal implements EmergencyState, OccupancyLevel {
      * @return list of terminal's gates
      */
     public List<Gate> getGates() {
-        List<Gate> gatesList = new ArrayList<>(this.gates);
-        return gatesList;
+        return new ArrayList<Gate>(this.gates);
     }
 
     /**

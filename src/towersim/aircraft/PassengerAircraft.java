@@ -166,7 +166,7 @@ public class PassengerAircraft extends Aircraft {
         int loadPassengers =
                 (int) Math.round((double) loadPercentage / loadingTime);
 
-        if (currentTask.equals(TaskType.LOAD)) {
+        if (currentTask.getType().equals(TaskType.LOAD)) {
             this.numPassengers += loadPassengers;
             //Maximum capacity reached
             if (this.numPassengers > this.maxPassengers) {

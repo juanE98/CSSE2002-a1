@@ -3,11 +3,13 @@ package towersim.ground;
 import org.junit.Before;
 import org.junit.Test;
 import towersim.aircraft.AircraftCharacteristics;
+import towersim.aircraft.FreightAircraft;
 import towersim.aircraft.PassengerAircraft;
 import towersim.tasks.Task;
 import towersim.tasks.TaskList;
 import towersim.tasks.TaskType;
 import towersim.util.NoSpaceException;
+import towersim.util.NoSuitableGateException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,8 @@ import static org.junit.Assert.*;
 
 public class TerminalTest {
 
-    private AirplaneTerminal terminal1;
+    private AirplaneTerminal terminalA;
+    private HelicopterTerminal terminalH;
     private Gate gateA;
     private Gate gateB;
     private Gate gateC;
@@ -29,13 +32,23 @@ public class TerminalTest {
     private Task takeoff;
     private TaskList task1;
     private TaskList task2;
+    private FreightAircraft helicopterA;
+    private Gate gateD;
+    private Gate gateE;
+    private Gate gateF;
+    private Gate gateG;
 
     @Before
     public void setUp() throws Exception {
-        terminal1 = new AirplaneTerminal(1);
+        terminalA = new AirplaneTerminal(1);
+        terminalH = new HelicopterTerminal(2);
         gateA = new Gate(1);
         gateB = new Gate(2);
         gateC = new Gate(3);
+        gateD = new Gate(4);
+        gateE = new Gate(5);
+        gateF = new Gate(6);
+        gateG = new Gate(7);
 
 
         //Instantiate Task objects
@@ -67,36 +80,80 @@ public class TerminalTest {
         aircraftA = new PassengerAircraft("ARC",
                 AircraftCharacteristics.AIRBUS_A320,task1,22000,50);
 
-
+        helicopterA = new FreightAircraft("HEL",
+                AircraftCharacteristics.SIKORSKY_SKYCRANE, task2, 3000, 4500);
     }
 
     @Test
-    public void addGate() {
+    public void addGateTest() {
+        try {
+            terminalA.addGate(gateA);
+        } catch (NoSpaceException e) {
+            fail();
+        }
+        try {
+            terminalA.addGate(gateB);
+        } catch (NoSpaceException e) {
+            fail();
+        }
+        try {
+            terminalA.addGate(gateC);
+        } catch (NoSpaceException e) {
+            fail();
+        }
+        try {
+            terminalA.addGate(gateD);
+        } catch (NoSpaceException e) {
+            fail();
+        }
+        try {
+            terminalA.addGate(gateE);
+        } catch (NoSpaceException e) {
+            fail();
+        }
+        try {
+            terminalA.addGate(gateF);
+        } catch (NoSpaceException e) {
+            fail();
+        }
+        try {
+            terminalA.addGate(gateG);
+            fail();
+        } catch (NoSpaceException e) {
+            //throws exception
+        }
     }
 
     @Test
-    public void getGates() {
+    public void findUnoccupiedGateNoneTest() throws NoSpaceException {
+        gateA.parkAircraft(aircraftA);
+        terminalA.addGate(gateA);
+        try {
+            terminalA.findUnoccupiedGate();
+            fail();
+        } catch (NoSuitableGateException e) {
+            //throws exception as gate is occupied
+        }
     }
 
     @Test
-    public void findUnoccupiedGate() {
-    }
-
-    @Test
-    public void declareEmergency() {
-    }
-
-    @Test
-    public void clearEmergency() {
+    public void findUnoccupiedGateSuccessTest() throws NoSpaceException {
+        terminalA.addGate(gateB);
+        try {
+            terminalA.findUnoccupiedGate();
+        } catch (NoSuitableGateException e) {
+            // Suitable gate should exist, exception shouldn't be thrown.
+            fail();
+        }
     }
 
     @Test
     public void calculateOccupancyLevel() throws NoSpaceException {
         gateA.parkAircraft(aircraftA);
-        terminal1.addGate(gateA);
-        terminal1.addGate(gateB);
-        terminal1.addGate(gateC);
-        assertEquals("",33,terminal1.calculateOccupancyLevel());
+        terminalA.addGate(gateA);
+        terminalA.addGate(gateB);
+        terminalA.addGate(gateC);
+        assertEquals("",33,terminalA.calculateOccupancyLevel());
 
 
     }
@@ -104,9 +161,9 @@ public class TerminalTest {
     @Test
     public void testToString() {
         String expected = "AirplaneTerminal 1, 0 gates";
-        assertEquals("",expected,terminal1.toString());
-        terminal1.declareEmergency();
+        assertEquals("",expected,terminalA.toString());
+        terminalA.declareEmergency();
         String expected1 = "AirplaneTerminal 1, 0 gates (EMERGENCY)";
-        assertEquals("",expected1,terminal1.toString());
+        assertEquals("",expected1,terminalA.toString());
     }
 }

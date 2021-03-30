@@ -6,7 +6,6 @@ import towersim.ground.AirplaneTerminal;
 import towersim.ground.Gate;
 import towersim.ground.HelicopterTerminal;
 import towersim.ground.Terminal;
-import towersim.tasks.Task;
 import towersim.tasks.TaskType;
 import towersim.util.NoSpaceException;
 import towersim.util.NoSuitableGateException;
@@ -55,7 +54,7 @@ public class ControlTower implements Tickable {
      * @return all terminals
      */
     public List<Terminal> getTerminals() {
-        return new ArrayList<>(this.terminals);
+        return new ArrayList<Terminal>(this.terminals);
     }
 
     /**
@@ -72,8 +71,8 @@ public class ControlTower implements Tickable {
     public void addAircraft(Aircraft aircraft)
             throws NoSuitableGateException {
         //Current Task of aircraft.
-        Task currentTask =
-                aircraft.getTaskList().getCurrentTask();
+        TaskType currentTask =
+                aircraft.getTaskList().getCurrentTask().getType();
 
         //add given aircraft to control tower jurisdiction.
         this.aircrafts.add(aircraft);
@@ -125,16 +124,16 @@ public class ControlTower implements Tickable {
             throws NoSuitableGateException {
         //Check Airplane Terminals
         if (aircraft.getCharacteristics().type.equals(AircraftType.AIRPLANE)) {
-            for (Terminal terminal : this.getTerminals()) {
-                if (terminal instanceof AirplaneTerminal) {
-                    return terminal.findUnoccupiedGate();
+            for (Terminal terminalAirPlane : this.getTerminals()) {
+                if (terminalAirPlane instanceof AirplaneTerminal) {
+                    return terminalAirPlane.findUnoccupiedGate();
                 }
             }
             //Check Helicopter terminals
         } else if (aircraft.getCharacteristics().type.equals(AircraftType.HELICOPTER)) {
-            for (Terminal terminal : this.getTerminals()) {
-                if (terminal instanceof HelicopterTerminal) {
-                    return terminal.findUnoccupiedGate();
+            for (Terminal terminalHeli : this.getTerminals()) {
+                if (terminalHeli instanceof HelicopterTerminal) {
+                    return terminalHeli.findUnoccupiedGate();
                 }
             }
         }
