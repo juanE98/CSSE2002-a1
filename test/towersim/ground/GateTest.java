@@ -81,7 +81,7 @@ public class GateTest {
     }
 
     @Test
-    public void parkAircraftTest() throws NoSpaceException {
+    public void parkAircraftTest() {
         try {
             //Plane 1 should park successfully
             gate1.parkAircraft(plane1);
@@ -116,7 +116,7 @@ public class GateTest {
     }
 
     @Test
-    public void isNotOccupiedTest() throws NoSpaceException {
+    public void isNotOccupiedTest() {
         gate1.aircraftLeaves();
         assertFalse(gate1.isOccupied());
     }

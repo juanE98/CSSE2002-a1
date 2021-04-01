@@ -30,7 +30,7 @@ public enum TaskType {
     private final String description;
 
     /** Constructor class */
-    private TaskType(String description) {
+    TaskType(String description) {
         this.description = description;
     }
 

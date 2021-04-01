@@ -126,7 +126,7 @@ public class ControlTowerTest {
             control1.addAircraft(planeP2);
             fail();
         } catch (NoSuitableGateException e) {
-            //thorows exception as gate is full 
+            //thorows exception as gate is full
         }
     }
 

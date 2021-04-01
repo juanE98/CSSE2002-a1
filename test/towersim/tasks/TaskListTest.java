@@ -73,7 +73,7 @@ public class TaskListTest {
     }
 
     @Test
-    public void getNextTaskLastTest() {
+    public void getNextTaskWrapTest() {
         task2.moveToNextTask();
         task2.moveToNextTask();
         task2.moveToNextTask();

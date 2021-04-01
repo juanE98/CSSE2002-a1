@@ -236,5 +236,4 @@ public abstract class Aircraft implements OccupancyLevel, Tickable, EmergencySta
     public boolean hasEmergency() {
         return this.emergencyStatus;
     }
-
 }
